@@ -14,16 +14,12 @@ use LetyGroup\LetyLink\Factory\ResponseFactory;
 use LetyGroup\LetyLink\Views;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use Symfony\Component\HttpFoundation\Request;
 
 class Router
 {
     private const EXTENSION = 'extension';
     private const SHORT = 'short';
 
-    /** @var HttpFoundationFactory $requestFactory */
-    protected $requestFactory;
     /** @var array $controllers */
     protected $controllers;
     /** @var $views Config */
@@ -37,7 +33,6 @@ class Router
     public function __construct(Views $views, Config $config)
     {
         $this->views = $views;
-        $this->requestFactory = new HttpFoundationFactory();
         $this->controllers = [
             self::EXTENSION => new ExtensionController($views),
             self::SHORT => new ShortenerController($config, $views),
@@ -51,9 +46,8 @@ class Router
     public function __invoke(ServerRequestInterface $request): Response
     {
         try {
-            $request = $this->requestFactory->createRequest($request);
             $key = $this->getRouteKey($request);
-            $response = $this->controllers[$key]();
+            $response = $this->controllers[$key]($request);
         } catch (\Exception $exception) {
             try {
                 $content = $this->views->render('404');
@@ -61,18 +55,17 @@ class Router
                 $content = $e->getMessage();
             }
             $response = ResponseFactory::createSuccessResponse($content);
-        } finally {
-            return $response;
         }
+        return $response;
     }
 
     /**
-     * @param Request $request
+     * @param ServerRequestInterface $request
      * @return string
      */
-    private function getRouteKey(Request $request): string
+    private function getRouteKey(ServerRequestInterface $request): string
     {
-        $uri = $request->getRequestUri();
+        $uri = $request->getUri()->getPath();
         return strpos($uri, '/view/') === 0 ? self::EXTENSION : self::SHORT;
     }
 }

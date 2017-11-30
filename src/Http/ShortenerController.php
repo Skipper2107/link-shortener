@@ -13,8 +13,8 @@ use LetyGroup\LetyLink\Config;
 use LetyGroup\LetyLink\Factory\ResponseFactory;
 use LetyGroup\LetyLink\Repository\LinkRepository;
 use LetyGroup\LetyLink\Views;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use React\Http\Response;
-use Symfony\Component\HttpFoundation\Request;
 
 class ShortenerController
 {
@@ -40,11 +40,11 @@ class ShortenerController
      */
     public function __invoke(Request $request): Response
     {
-
-        $key = substr($request->getRequestUri(), 1);
+        $key = substr($request->getUri()->getPath(), 1);
         $link = $this->links->fetchLinkByKey($key);
-        return ResponseFactory::createSuccessResponse($this->views->render('redirect', [
+        $content = $this->views->render('redirect', [
             'link' => $link,
-        ]));
+        ]);
+        return ResponseFactory::createSuccessResponse($content);
     }
 }

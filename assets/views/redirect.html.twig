@@ -35,8 +35,8 @@
 <body>
 <div class="crossing">
     <p class="crossing__text">Если переход не произошел автоматически - </p>
-    <a class="crossing__link" href="{{ url }}">нажмите здесь</a>
+    <a class="crossing__link" href="{{ link }}">нажмите здесь</a>
 </div>
 </body>
-<script>window.location = '{{ url }}';</script>
+<script>window.location = '{{ link | raw }}';</script>
 </html>

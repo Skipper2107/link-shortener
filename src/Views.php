@@ -13,12 +13,11 @@ class Views
 {
 
     protected $twig;
-    protected $loader;
 
     public function __construct(string $pathToViews, string $cache)
     {
-        $this->loader = new \Twig_Loader_Filesystem($pathToViews);
-        $this->twig = new \Twig_Environment($this->loader, [
+        $loader = new \Twig_Loader_Filesystem($pathToViews);
+        $this->twig = new \Twig_Environment($loader, [
             'cache' => $cache,
         ]);
     }
@@ -33,9 +32,7 @@ class Views
      */
     public function render(string $name, array $options = [])
     {
-        if (!$this->loader->exists($name)) {
-            return sprintf('View %s was not found', $name);
-        }
+        $name = sprintf('%s.html.twig', $name);
         return $this->twig->render($name, $options);
     }
 

@@ -11,8 +11,8 @@ namespace LetyGroup\LetyLink\Http;
 
 use LetyGroup\LetyLink\Factory\ResponseFactory;
 use LetyGroup\LetyLink\Views;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use React\Http\Response;
-use Symfony\Component\HttpFoundation\Request;
 
 class ExtensionController
 {
@@ -32,7 +32,7 @@ class ExtensionController
 
     public function __invoke(Request $request): Response
     {
-        $location = sprintf('%s%s', self::LS_HOST, $request->getRequestUri());
+        $location = sprintf('%s%s', self::LS_HOST, $request->getUri()->getPath());
         return ResponseFactory::createRedirectResponse($location);
     }
 }

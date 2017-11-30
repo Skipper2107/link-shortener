@@ -13,9 +13,10 @@
   },
   "require": {
     "vlucas/phpdotenv": "^2.4",
-    "symfony/http-foundation": "^3.3",
     "react/http": "^0.7.4",
-    "symfony/psr-http-message-bridge": "^1.0",
     "twig/twig": "^2.4"
+  },
+  "require-dev": {
+    "raveren/kint": "^1.1"
   }
 }
