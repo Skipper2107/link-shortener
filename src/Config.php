@@ -25,18 +25,15 @@ class Config
         $this->dir = $root;
     }
 
-    /**
-     *
-     */
     public function configure()
     {
         $env = new Dotenv($this->dir);
+        $env->load();
         $env->required([
             self::LETY_LINK_HOST,
             self::LETY_LINK_PORT,
             self::LINKS_FILE_LOCATION,
         ]);
-        $env->load();
     }
 
     /**

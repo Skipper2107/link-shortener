@@ -6,10 +6,10 @@
  * Time: 12:25 PM
  */
 
-require_once '../vendor/autoload.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
 
 #Config
-$conf = new \LetyGroup\LetyLink\Config(__DIR__);
+$conf = new \LetyGroup\LetyLink\Config(__DIR__ . DIRECTORY_SEPARATOR . '..');
 $conf->configure();
 
 #Views
