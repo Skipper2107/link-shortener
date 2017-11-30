@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forwarding</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style type="text/css">
+        h1, p {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .crossing {
+            max-width: 1200px;
+            padding: 80px 20px 20px 20px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .crossing__title {
+            font-size: 30px;
+            color: red;
+        }
+
+        .crossing__text {
+            font-size: 24px;
+        }
+
+        .crossing__link {
+            font-family: 'Open Sans', sans-serif ! imporant;
+            color: #4EA0DE;
+        }
+
+    </style>
+</head>
+<body>
+<div class="crossing">
+    <p class="crossing__text">Если переход не произошел автоматически - </p>
+    <a class="crossing__link" href="{{ url }}">нажмите здесь</a>
+</div>
+</body>
+<script>window.location = '{{ url }}';</script>
+</html>
