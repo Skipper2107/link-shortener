@@ -11,6 +11,8 @@ namespace LetyGroup\LetyLink\Http;
 
 use LetyGroup\LetyLink\Config;
 use LetyGroup\LetyLink\Factory\ResponseFactory;
+use LetyGroup\LetyLink\Http\Controller\ExtensionController;
+use LetyGroup\LetyLink\Http\Controller\ShortenerController;
 use LetyGroup\LetyLink\Views;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;

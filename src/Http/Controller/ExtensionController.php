@@ -6,7 +6,7 @@
  * Time: 1:10 PM
  */
 
-namespace LetyGroup\LetyLink\Http;
+namespace LetyGroup\LetyLink\Http\Controller;
 
 
 use LetyGroup\LetyLink\Factory\ResponseFactory;
@@ -32,7 +32,12 @@ class ExtensionController
 
     public function __invoke(Request $request): Response
     {
-        $location = sprintf('%s%s', self::LS_HOST, $request->getUri()->getPath());
+        $location = sprintf(
+            '%s%s?%s',
+            self::LS_HOST,
+            $request->getUri()->getPath(),
+            $request->getUri()->getQuery()
+        );
         return ResponseFactory::createRedirectResponse($location);
     }
 }

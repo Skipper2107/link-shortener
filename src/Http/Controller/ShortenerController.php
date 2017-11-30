@@ -6,7 +6,7 @@
  * Time: 1:10 PM
  */
 
-namespace LetyGroup\LetyLink\Http;
+namespace LetyGroup\LetyLink\Http\Controller;
 
 
 use LetyGroup\LetyLink\Config;
