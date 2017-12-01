@@ -21,6 +21,7 @@ class ResponseFactory
     {
         return new Response(200, [
             'Content-Type' => 'text/html',
+            'X-Powered-By' => 'lety-link',
         ], $content);
     }
 
@@ -32,6 +33,7 @@ class ResponseFactory
     {
         return new Response(302, [
             'Location' => $location,
+            'X-Powered-By' => 'lety-link',
         ]);
     }
 }
