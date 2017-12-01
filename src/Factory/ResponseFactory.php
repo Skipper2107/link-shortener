@@ -20,7 +20,7 @@ class ResponseFactory
     public static function createSuccessResponse($content): Response
     {
         return new Response(200, [
-            'Content Type' => 'text/html',
+            'Content-Type' => 'text/html',
         ], $content);
     }
 
