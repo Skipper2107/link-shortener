@@ -10,7 +10,6 @@ namespace LetyGroup\LetyLink\Http\Controller;
 
 
 use LetyGroup\LetyLink\Factory\ResponseFactory;
-use LetyGroup\LetyLink\Views;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use React\Http\Response;
 
@@ -18,16 +17,16 @@ class ExtensionController
 {
     private const LS_HOST = 'https://letyshops.com';
 
-    /** @var Views $views */
-    protected $views;
+    /** @var ResponseFactory $factory */
+    protected $factory;
 
     /**
      * ExtensionController constructor.
-     * @param Views $views
+     * @param ResponseFactory $responseFactory
      */
-    public function __construct(Views $views)
+    public function __construct(ResponseFactory $responseFactory)
     {
-        $this->views = $views;
+        $this->factory = $responseFactory;
     }
 
     public function __invoke(Request $request): Response
@@ -38,6 +37,6 @@ class ExtensionController
             $request->getUri()->getPath(),
             $request->getUri()->getQuery()
         );
-        return ResponseFactory::createRedirectResponse($location);
+        return $this->factory->createRedirectResponse($location);
     }
 }

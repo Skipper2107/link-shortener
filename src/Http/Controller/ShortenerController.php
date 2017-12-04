@@ -12,7 +12,6 @@ namespace LetyGroup\LetyLink\Http\Controller;
 use LetyGroup\LetyLink\Config;
 use LetyGroup\LetyLink\Factory\ResponseFactory;
 use LetyGroup\LetyLink\Repository\LinkRepository;
-use LetyGroup\LetyLink\Views;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use React\Http\Response;
 
@@ -20,13 +19,13 @@ class ShortenerController
 {
     /** @var LinkRepository $links */
     protected $links;
-    /** @var Views $views */
-    protected $views;
+    /** @var ResponseFactory $factory */
+    protected $factory;
 
 
-    public function __construct(Config $config, Views $views)
+    public function __construct(Config $config, ResponseFactory $responseFactory)
     {
-        $this->views = $views;
+        $this->factory = $responseFactory;
         $this->links = new LinkRepository($config->getIniLocation());
     }
 
@@ -42,9 +41,8 @@ class ShortenerController
     {
         $key = substr($request->getUri()->getPath(), 1);
         $link = $this->links->fetchLinkByKey($key);
-        $content = $this->views->render('redirect', [
+        return $this->factory->render('redirect', [
             'link' => $link,
         ]);
-        return ResponseFactory::createSuccessResponse($content);
     }
 }

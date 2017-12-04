@@ -12,32 +12,39 @@ namespace LetyGroup\LetyLink\Http;
 use LetyGroup\LetyLink\Config;
 use LetyGroup\LetyLink\Factory\ResponseFactory;
 use LetyGroup\LetyLink\Http\Controller\ExtensionController;
+use LetyGroup\LetyLink\Http\Controller\FileController;
 use LetyGroup\LetyLink\Http\Controller\ShortenerController;
 use LetyGroup\LetyLink\Views;
 use Psr\Http\Message\ServerRequestInterface;
+use React\EventLoop\LoopInterface;
 use React\Http\Response;
 
 class Router
 {
     private const EXTENSION = 'extension';
     private const SHORT = 'short';
+    private const FILES = 'file';
 
     /** @var array $controllers */
     protected $controllers;
     /** @var $views Config */
     protected $views;
+    /** @var ResponseFactory $responseFactory */
+    protected $responseFactory;
 
     /**
      * Router constructor.
      * @param Views $views
      * @param Config $config
+     * @param LoopInterface $loop
      */
-    public function __construct(Views $views, Config $config)
+    public function __construct(Views $views, Config $config, LoopInterface $loop)
     {
-        $this->views = $views;
+        $this->responseFactory = new ResponseFactory($loop, $views);
         $this->controllers = [
-            self::EXTENSION => new ExtensionController($views),
-            self::SHORT => new ShortenerController($config, $views),
+            self::EXTENSION => new ExtensionController($this->responseFactory),
+            self::SHORT => new ShortenerController($config, $this->responseFactory),
+            self::FILES => new FileController($config, $this->responseFactory),
         ];
     }
 
@@ -52,11 +59,10 @@ class Router
             $response = $this->controllers[$key]($request);
         } catch (\Exception $exception) {
             try {
-                $content = $this->views->render('404');
+                return $this->responseFactory->render('404', [], 404);
             } catch (\Exception $e) {
-                $content = $e->getMessage();
+                return $this->responseFactory->createResponse($e->getMessage(), 500);
             }
-            $response = ResponseFactory::createSuccessResponse($content);
         }
         return $response;
     }
@@ -68,6 +74,6 @@ class Router
     private function getRouteKey(ServerRequestInterface $request): string
     {
         $uri = $request->getUri()->getPath();
-        return strpos($uri, '/view/') === 0 ? self::EXTENSION : self::SHORT;
+        return strpos($uri, '/view/') === 0 ? self::EXTENSION : (strpos($uri, '.') === false ? self::SHORT : self::FILES);
     }
 }
