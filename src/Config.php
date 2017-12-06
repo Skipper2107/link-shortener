@@ -16,6 +16,7 @@ class Config
     private const LETY_LINK_HOST = 'LETY_LINK_HOST';
     private const LETY_LINK_PORT = 'LETY_LINK_PORT';
     private const LINKS_FILE_LOCATION = 'LINKS_FILE_LOCATION';
+    private const INI_FILE_REFRESH_SECONDS = 'INI_FILE_REFRESH_SECONDS';
 
     /** @var string $dir */
     protected $dir;
@@ -38,6 +39,7 @@ class Config
             self::LETY_LINK_HOST,
             self::LETY_LINK_PORT,
             self::LINKS_FILE_LOCATION,
+            self::INI_FILE_REFRESH_SECONDS,
         ]);
     }
 
@@ -47,6 +49,11 @@ class Config
     public function getIniLocation(): string
     {
         return sprintf('%s/%s', $this->dir, getenv(self::LINKS_FILE_LOCATION));
+    }
+
+    public function getIniFileRefreshRateInSeconds(): int
+    {
+        return getenv(self::INI_FILE_REFRESH_SECONDS);
     }
 
     /**

@@ -41,11 +41,15 @@ class Router
     public function __construct(Views $views, Config $config, LoopInterface $loop)
     {
         $this->responseFactory = new ResponseFactory($loop, $views);
+        $shortController = new ShortenerController($config, $this->responseFactory);
         $this->controllers = [
             self::EXTENSION => new ExtensionController($this->responseFactory),
-            self::SHORT => new ShortenerController($config, $this->responseFactory),
+            self::SHORT => $shortController,
             self::FILES => new FileController($config, $this->responseFactory),
         ];
+        $loop->addPeriodicTimer($config->getIniFileRefreshRateInSeconds(), function () use ($shortController) {
+            $shortController->refresh();
+        });
     }
 
     /**

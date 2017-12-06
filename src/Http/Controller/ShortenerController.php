@@ -21,12 +21,20 @@ class ShortenerController
     protected $links;
     /** @var ResponseFactory $factory */
     protected $factory;
+    /** @var string $iniLocation */
+    protected $iniLocation;
 
 
     public function __construct(Config $config, ResponseFactory $responseFactory)
     {
         $this->factory = $responseFactory;
-        $this->links = new LinkRepository($config->getIniLocation());
+        $this->iniLocation = $config->getIniLocation();
+        $this->links = new LinkRepository($this->iniLocation);
+    }
+
+    public function refresh()
+    {
+        $this->links->refreshData($this->iniLocation);
     }
 
     /**

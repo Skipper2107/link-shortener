@@ -22,6 +22,11 @@ class LinkRepository
      */
     public function __construct(string $location)
     {
+        $this->refreshData($location);
+    }
+
+    public function refreshData(string $location)
+    {
         $this->links = parse_ini_file($location);
     }
 
