@@ -1,5 +1,7 @@
 # link-shortener
 
-copy `.env.example` to `.env`
+copy `.env.dist` to `.env`
 
-run `php public/index.php`
+
+
+run `composer install && php index.php`
