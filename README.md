@@ -1,4 +1,4 @@
-# link-shortener
+# redirector
 
 copy `.env.dist` to `.env`
 
